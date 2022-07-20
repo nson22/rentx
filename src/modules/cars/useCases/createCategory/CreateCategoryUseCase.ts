@@ -9,8 +9,8 @@ class CreateCategoryUseCase {
 
     constructor(private categoriesRespository: ICategoriesRepository) { }
 
-    execute({ name, description }: IRequest): void {
-        const categoryExists = this.categoriesRespository.findByName(name);
+    async execute({ name, description }: IRequest): Promise<void> {
+        const categoryExists = await this.categoriesRespository.findByName(name);
 
         if (categoryExists) {
             throw new Error("Category already exist in database.");

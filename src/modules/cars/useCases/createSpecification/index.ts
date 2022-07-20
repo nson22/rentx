@@ -7,4 +7,4 @@ const specificataionsRepositoty = SpecificationRepository.getInstance()
 const createSpecificationUseCase = new CreateSpecificationUseCase(specificataionsRepositoty);
 const createSpecificationController = new CreateSpecificationController(createSpecificationUseCase);
 
-export {createSpecificationController}
+export { createSpecificationController }
