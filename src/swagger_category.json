@@ -1,7 +1,7 @@
 {
     "openapi": "3.0.0",
     "info": {
-        "title": "RentalX documentations",
+        "title": "RentX documentations",
         "description": "This is a API for car rent",
         "version": "1.0.0",
         "contact": {
@@ -12,7 +12,7 @@
         "/categories": {
             "post": {
                 "tags": [
-                    "Category"
+                    "Categories"
                 ],
                 "summary": "Create a category",
                 "description": "Create a new category",
@@ -41,14 +41,14 @@
                     "201": {
                         "description": "Created"
                     },
-                    "500": {
+                    "400": {
                         "description": "Category already exists."
                     }
                 }
             },
             "get": {
                 "tags": [
-                    "Category"
+                    "Categories"
                 ],
                 "summary": "List all categories",
                 "description": "List all categories available.",
@@ -80,7 +80,7 @@
         "/categories/import": {
             "post": {
                 "tags": [
-                    "Category"
+                    "Categories"
                 ],
                 "summary": "Import categories file",
                 "description": "Import a csv file with categories required.",
@@ -88,16 +88,12 @@
                     "content": {
                         "multipart/form-data": {
                             "schema": {
-                                "type": "obejct",
+                                "type": "object",
                                 "properties": {
-                                    "filename": {
+                                    "file": {
                                         "type": "string",
                                         "format": "binary"
                                     }
-                                },
-                                "example": {
-                                    "name": "Category name sampple",
-                                    "description": "Category description sample"
                                 }
                             }
                         }
@@ -113,27 +109,15 @@
         "/specifications": {
             "post": {
                 "tags": [
-                    "Specification"
+                    "Specifications"
                 ],
-                "summary": "Create a Specification",
+                "summary": "Create a specification",
                 "description": "Create a new specification",
                 "requestBody": {
                     "content": {
                         "application/json": {
                             "schema": {
-                                "type": "obejct",
-                                "properties": {
-                                    "name": {
-                                        "type": "string"
-                                    },
-                                    "description": {
-                                        "type": "string"
-                                    }
-                                },
-                                "example": {
-                                    "name": "Specification name sampple",
-                                    "description": "Specification description sample"
-                                }
+                                "$ref": "#/definitions/Specifications"
                             }
                         }
                     }
@@ -142,14 +126,14 @@
                     "201": {
                         "description": "Created"
                     },
-                    "500": {
+                    "400": {
                         "description": "Specification already exists."
                     }
                 }
             },
             "get": {
                 "tags": [
-                    "Specification"
+                    "Specifications"
                 ],
                 "summary": "List all specifications",
                 "description": "List all specifications available.",
@@ -176,6 +160,23 @@
                         }
                     }
                 }
+            }
+        }
+    },
+    "definitions": {
+        "Specifications": {
+            "type": "obejct",
+            "properties": {
+                "name": {
+                    "type": "string"
+                },
+                "description": {
+                    "type": "string"
+                }
+            },
+            "example": {
+                "name": "Specification name sampple",
+                "description": "Specification description sample"
             }
         }
     }

@@ -1,17 +1,21 @@
-import { Request, Response } from "express";
-import { ImportCategoryUseCase } from "./ImportCategoryUseCase";
+import e, { Request, Response } from 'express';
+import { container } from 'tsyringe';
+
+import { ImportCategoryUseCase } from './ImportCategoryUseCase';
 
 class ImportCategoryController {
-
-    constructor(private importCategoryUseCase: ImportCategoryUseCase){}
-
-    handle(request: Request, response: Response): Response {
+    async handle(request: Request, response: Response): Promise<Response> {
         const { file } = request;
-    
-        this.importCategoryUseCase.execute(file)
-    
-        return response.status(200).send();
+        const importCategoryUseCase = container.resolve(ImportCategoryUseCase);
+
+        try {
+            await importCategoryUseCase.execute(file);
+
+            return response.status(201).send();
+        } catch (error) {
+            return response.status(400).json({ error: error.message });
+        }
     }
 }
 
-export { ImportCategoryController }
+export { ImportCategoryController };

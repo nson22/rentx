@@ -1,18 +1,19 @@
 {
-    "type": "postgres",
-    "port": 5432,
-    "host": "localhost",
-    "username": "docker",
-    "password": "ignite",
-    "database": "rentx",
-    "migrations": [
-        "./src/database/migrations/*.ts"
-    ],
-    "cli": {
-        "migrationsDir": "./src/database/migrations",
-        "entitiesDir": "./src/modules/cars/entities"
-    },
-    "entities": [
-        "./src/modules/cars/entities/**/*{.ts,.js}"
-    ]
+	"type": "postgres",
+	"port": 5432,
+	"host": "localhost",
+	"username": "docker",
+	"password": "ignite",
+	"database": "rentx",
+	"migrations": [
+		"./src/database/migrations/*.ts"
+	],
+	"cli": {
+		"migrationsDir": "./src/database/migrations",
+		"entitiesDir": "./src/modules/cars/entities"
+	},
+	"entities": [
+		"./src/modules/cars/entities/**/*{.ts,.js}",
+		"./src/modules/accounts/entities/**/*{.ts,.js}"
+	]
 }

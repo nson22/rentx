@@ -1,0 +1,3 @@
+interface IPayloadDTO {
+	sub: string;
+}
