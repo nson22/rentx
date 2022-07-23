@@ -3,10 +3,10 @@ import express, { Request, Response, NextFunction } from "express";
 import "express-async-errors";
 import { router } from "./routes";
 import swaggerUI from "swagger-ui-express"
-import swaggerCategoryFile from "./swagger_category.json"
-import "./database"
-import "./shared/container"
-import { AppError } from "./errors/AppErrors";
+import swaggerCategoryFile from "@docs/swagger_category.json"
+import "@shared/infra/typeorm"
+import "@shared/container"
+import { AppError } from "@shared/errors/AppErrors";
 
 const app = express();
 

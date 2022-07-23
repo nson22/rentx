@@ -1,10 +1,10 @@
 import { compare } from "bcryptjs";
 import { sign } from "jsonwebtoken";
 import { inject, injectable } from "tsyringe";
-import { AppError } from "../../../../errors/AppErrors";
-import { IAuthenticateUserDTO } from "../../dtos/IAuthenticateUserDTO";
-import { ITokenDTO } from "../../dtos/ITokenDTO";
-import { IUsersRepository } from "../../repositories/IUsersRepository";
+import { AppError } from "@shared/errors/AppErrors";
+import { ITokenDTO } from "@modules/accounts/dtos/ITokenDTO";
+import { IAuthenticateUserDTO } from "@modules/accounts/dtos/IAuthenticateUserDTO";
+import { IUsersRepository } from "@modules/accounts/repositories/IUsersRepository";
 
 
 @injectable()
@@ -22,9 +22,9 @@ class AuthenticateUserUseCase {
 			throw new AppError("Email or password incorrect.");
 		}
 
-		const isValidUser = compare(password, user.password);
+		const passworMatch = compare(password, user.password);
 
-		if (!isValidUser) {
+		if (!passworMatch) {
 			throw new AppError("Email or password incorrect.");;
 		}
 

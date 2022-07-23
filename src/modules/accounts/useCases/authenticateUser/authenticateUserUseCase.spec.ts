@@ -1,7 +1,8 @@
-import { ICreateUsersDTO } from "../../dtos/ICreateUserDTO";
-import { UsersRepositoryInMemory } from "../../repositories/in-memory/UsersRepositoryInMemoey";
-import { CreateUserUserCase } from "../createUser/createUserUseCase";
-import { AuthenticateUserUseCase } from "./authenticateUserUseCase";
+import { AppError } from "@shared/errors/AppErrors";
+import { ICreateUsersDTO } from "@modules/accounts/dtos/ICreateUserDTO";
+import { UsersRepositoryInMemory } from "@modules/accounts/repositories/in-memory/UsersRepositoryInMemoey";
+import { CreateUserUserCase } from "@modules/accounts/useCases/createUser/createUserUseCase";
+import { AuthenticateUserUseCase } from "@modules/accounts/useCases/authenticateUser/authenticateUserUseCase";
 
 describe("Authenticate an user", () => {
 	let userRepositoryInMemory: UsersRepositoryInMemory;
@@ -32,4 +33,32 @@ describe("Authenticate an user", () => {
 
 		expect(result).toHaveProperty("token");
 	});
+
+	it("should be not possible to authenticate a non existing user", () => {
+		expect(async () => {
+			await authenticateUserUseCase.execute({
+				email: "",
+				password: ""				
+			});
+		}).rejects.toBeInstanceOf(AppError);
+	});
+
+	it("should be not possible to authenticate an existing user without a valid password", () => {
+		expect(async () => {
+			const user: ICreateUsersDTO = {
+				name: "Fake user",
+				email: "fake@fake.com",
+				password: "fake",
+				driver_license: "0000"
+			}
+			
+			await createUserUseCase.execute(user);
+
+			await authenticateUserUseCase.execute({
+				email: "fake@fake.com",
+				password: "Not given"				
+			});
+		}).rejects.toBeInstanceOf(AppError);
+	});
+
 });

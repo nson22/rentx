@@ -1,6 +1,6 @@
 interface IAuthenticateUserDTO {
-	password: string;
 	email: string;
+	password: string;
 }
 
 export { IAuthenticateUserDTO }

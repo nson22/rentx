@@ -1,7 +1,8 @@
 import { Request, Response, NextFunction } from "express"
 import { verify } from "jsonwebtoken";
-import { AppError } from "../errors/AppErrors";
-import { UsersRepository } from "../modules/accounts/repositories/implementations/UsersRepository";
+
+import { AppError } from "@shared/errors/AppErrors";
+import { UsersRepository } from "@modules/accounts/infra/typeorm/repositories/UsersRepository";
 
 export async function ensureAuthenticated(request: Request, response: Response, next: NextFunction) {
 	const authHeader = request.headers.authorization;
@@ -22,8 +23,6 @@ export async function ensureAuthenticated(request: Request, response: Response, 
 		if (!user) {
 			throw new AppError("User does not exists.", 401);
 		}
-
-		
 
 		request.user = {
 			id: user_id
