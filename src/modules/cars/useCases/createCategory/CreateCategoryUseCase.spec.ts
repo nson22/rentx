@@ -16,6 +16,7 @@ describe("Create new category", () => {
 			name: "Category test",
 			description: "Category description test"
 		}
+		
 		await createCategoryUseCase.execute({
 			name: category.name,
 			description: category.description

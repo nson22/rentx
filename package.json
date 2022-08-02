@@ -9,7 +9,8 @@
     "dev": "ts-node-dev -r tsconfig-paths/register --inspect=0.0.0.0:9229 --transpile-only --ignore-watch node_modules --respawn src/shared/infra/http/server.ts",
     "typeorm": "ts-node-dev -r tsconfig-paths/register ./node_modules/typeorm/cli",
     "debug": "node -r ts-node/register --inspect=0.0.0.0:9229 src/shared/infra/http/server.ts",
-    "test": "jest"
+    "test": "jest",
+	"seed:admin": "ts-node-dev src/shared/infra/typeorm/seed/admin.ts"
   },
   "dependencies": {
     "csv-parse": "^5.3.0",
@@ -22,7 +23,8 @@
     "swagger-ui-express": "^4.5.0",
     "tsyringe": "^4.7.0",
     "typeorm": "0.2.45",
-    "uuid": "^8.3.2"
+    "uuid": "^8.3.2",
+	"bcryptjs": "^2.4.3"
   },
   "devDependencies": {
     "@types/bcryptjs": "^2.4.2",
@@ -36,7 +38,6 @@
     "@types/uuid": "^8.3.4",
     "@typescript-eslint/eslint-plugin": "^5.30.6",
     "@typescript-eslint/parser": "^5.30.6",
-    "bcryptjs": "^2.4.3",
     "eslint": "^7.32.0",
     "eslint-config-airbnb-base": "^15.0.0",
     "eslint-config-prettier": "^8.5.0",
