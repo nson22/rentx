@@ -1,4 +1,8 @@
+import { Specification } from "../infra/typeorm/entities/Specification";
+
 class ICreateCarDTO {
+  id?: string;
+
   name: string;
 
   description: string;
@@ -11,7 +15,9 @@ class ICreateCarDTO {
 
   brand: string;
 
-  category_id: string;
+  category_id?: string;
+
+  specifications?: Specification[];
 }
 
 export { ICreateCarDTO };
