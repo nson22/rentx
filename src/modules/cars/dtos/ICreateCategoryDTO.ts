@@ -1,6 +1,6 @@
-//DTO -> data transfer object
+// DTO -> data transfer object
 interface ICreateCategoryDTO {
-	name: string,
-	description: string
+  name: string;
+  description: string;
 }
-export { ICreateCategoryDTO }
+export { ICreateCategoryDTO };

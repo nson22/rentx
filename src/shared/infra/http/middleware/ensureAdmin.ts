@@ -1,20 +1,21 @@
-import { Request, Response, NextFunction} from "express";
-import { AppError } from "@shared/errors/AppErrors";
+import { Request, Response, NextFunction } from "express";
+
 import { UsersRepository } from "@modules/accounts/infra/typeorm/repositories/UsersRepository";
+import { AppError } from "@shared/errors/AppErrors";
 
 export async function ensureAdmin(
-	request: Request,
-	response: Response,
-	next: NextFunction
+  request: Request,
+  response: Response,
+  next: NextFunction
 ) {
-	const { id } = request.user;
-	
-	const userRepository = new UsersRepository();
-	const user = await userRepository.findById(id);
+  const { id } = request.user;
 
-	if(!user.isAdmin){
-		throw new AppError("User isn't an admin");
-	}
+  const userRepository = new UsersRepository();
+  const user = await userRepository.findById(id);
 
-	next();
+  if (!user.isAdmin) {
+    throw new AppError("User isn't an admin");
+  }
+
+  next();
 }

@@ -1,26 +1,25 @@
-import { AppError } from "@shared/errors/AppErrors";
-import { ICreateCategoryDTO } from "@modules/cars/dtos/ICreateCategoryDTO";
-import { ICategoriesRepository } from "@modules/cars/repositories/ICategoriesRepository";
 import { inject, injectable } from "tsyringe";
 
+import { ICreateCategoryDTO } from "@modules/cars/dtos/ICreateCategoryDTO";
+import { ICategoriesRepository } from "@modules/cars/repositories/ICategoriesRepository";
+import { AppError } from "@shared/errors/AppErrors";
 
 @injectable()
 class CreateCategoryUseCase {
+  constructor(
+    @inject("CategoriesRepository")
+    private categoriesRespository: ICategoriesRepository
+  ) {}
 
-	constructor(
-		@inject("CategoriesRepository")
-		private categoriesRespository: ICategoriesRepository
-	) { }
+  async execute({ name, description }: ICreateCategoryDTO): Promise<void> {
+    const categoryExists = await this.categoriesRespository.findByName(name);
 
-	async execute({ name, description }: ICreateCategoryDTO): Promise<void> {
-		const categoryExists = await this.categoriesRespository.findByName(name);
+    if (categoryExists) {
+      throw new AppError("Category already exist in database.");
+    }
 
-		if (categoryExists) {
-			throw new AppError("Category already exist in database.");
-		}
-
-		this.categoriesRespository.create({ name, description });
-	}
+    this.categoriesRespository.create({ name, description });
+  }
 }
 
-export { CreateCategoryUseCase }
+export { CreateCategoryUseCase };

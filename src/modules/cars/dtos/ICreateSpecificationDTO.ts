@@ -1,6 +1,6 @@
 interface ICreateSpecificationDTO {
-	name: string,
-	description: string
+  name: string;
+  description: string;
 }
 
-export { ICreateSpecificationDTO }
+export { ICreateSpecificationDTO };

@@ -1,46 +1,46 @@
 import { inject, injectable } from "tsyringe";
 
 import { ICreateCarDTO } from "@modules/cars/dtos/ICreateCarDTO";
+import { Car } from "@modules/cars/infra/typeorm/entities/Car";
 import { ICarsRepository } from "@modules/cars/repositories/ICarsRepository";
 import { AppError } from "@shared/errors/AppErrors";
-import { Car } from "@modules/cars/infra/typeorm/entities/Car";
 
 @injectable()
-class CreateCarUseCase{
+class CreateCarUseCase {
+  constructor(
+    @inject("CarsRepository")
+    private carsRepository: ICarsRepository
+  ) {}
 
-	constructor(
-		@inject("CarsRepository")
-		private carsRepository: ICarsRepository
-	){}
+  async execute({
+    name,
+    description,
+    daily_rate,
+    license_plate,
+    fine_amount,
+    brand,
+    category_id,
+  }: ICreateCarDTO): Promise<Car> {
+    const carExists = await this.carsRepository.findByLicensesPlate(
+      license_plate
+    );
 
-	async execute({
-		name, 
-		description, 
-		daily_rate, 
-		license_plate, 
-		fine_amount, 
-		brand, 
-		category_id }: ICreateCarDTO): Promise<Car>{
+    if (carExists) {
+      throw new AppError("Car alrealdy exists.");
+    }
 
-		const carExists = await this.carsRepository.findByLicensesPlate(license_plate);
+    const car = await this.carsRepository.create({
+      name,
+      description,
+      daily_rate,
+      license_plate,
+      fine_amount,
+      brand,
+      category_id,
+    });
 
-		if (carExists){
-			throw new AppError("Car alrealdy exists.");
-		}
-
-		const car = await this.carsRepository.create({
-			name, 
-			description, 
-			daily_rate, 
-			license_plate, 
-			fine_amount, 
-			brand, 
-			category_id
-		});
-
-		return car;
-
-	}
+    return car;
+  }
 }
 
-export { CreateCarUseCase }
+export { CreateCarUseCase };
