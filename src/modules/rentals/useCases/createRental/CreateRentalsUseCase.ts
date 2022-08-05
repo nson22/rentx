@@ -44,8 +44,6 @@ class CreateRentalsUseCase {
       expected_return_date
     );
 
-    console.log(compare);
-
     if (compare < minimumRentHours) {
       throw new AppError("Invalid return rent time");
     }

@@ -3,8 +3,8 @@ import { Specification } from "@modules/cars/infra/typeorm/entities/Specificatio
 
 import { ISpecificationsRepository } from "../ISpecificationsRepository";
 
-class SpecificationsResositoryInMemory implements ISpecificationsRepository {
-  private specificationsResositoryInMemory: Specification[] = [];
+class SpecificationsRepositoryInMemory implements ISpecificationsRepository {
+  private specificationsRepositoryInMemory: Specification[] = [];
 
   async create({
     name,
@@ -16,23 +16,23 @@ class SpecificationsResositoryInMemory implements ISpecificationsRepository {
       name,
     });
 
-    this.specificationsResositoryInMemory.push(specification);
+    this.specificationsRepositoryInMemory.push(specification);
 
     return specification;
   }
 
   async findByName(name: string): Promise<Specification> {
-    return this.specificationsResositoryInMemory.find(
+    return this.specificationsRepositoryInMemory.find(
       (specification) => specification.name === name
     );
   }
 
   async list(): Promise<Specification[]> {
-    return this.specificationsResositoryInMemory;
+    return this.specificationsRepositoryInMemory;
   }
 
   async findByIds(ids: string[]): Promise<Specification[]> {
-    const allSpecifications = this.specificationsResositoryInMemory.filter(
+    const allSpecifications = this.specificationsRepositoryInMemory.filter(
       (specification) => ids.includes(specification.id)
     );
 
@@ -40,4 +40,4 @@ class SpecificationsResositoryInMemory implements ISpecificationsRepository {
   }
 }
 
-export { SpecificationsResositoryInMemory };
+export { SpecificationsRepositoryInMemory };
