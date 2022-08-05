@@ -13,7 +13,6 @@
 		"entitiesDir": "./src/modules/cars/entities"
 	},
 	"entities": [
-		"./src/modules/cars/infra/typeorm/entities/**/*{.ts,.js}",
-		"./src/modules/accounts/infra/typeorm/entities/**/*{.ts,.js}"
+		"./src/modules/**/infra/typeorm/entities/*.ts"
 	]
 }

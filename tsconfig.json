@@ -13,6 +13,12 @@
       "@utils/*": ["utils/*"],
       "@docs/*": ["docs/*"]
     },
+    "typeRoots": [
+      "./src/@types",
+      "./custom_typings",
+      "./@types",
+      "./node_modules/@types"
+    ],
     "resolveJsonModule": true,
     "sourceMap": true,
     "outDir": "./dist",
