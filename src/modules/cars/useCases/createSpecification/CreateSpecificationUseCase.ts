@@ -3,10 +3,7 @@ import { inject, injectable } from "tsyringe";
 import { ISpecificationsRepository } from "@modules/cars/repositories/ISpecificationsRepository";
 import { AppError } from "@shared/errors/AppErrors";
 
-interface IRequest {
-  name: string;
-  description: string;
-}
+import { ICreateSpecificationDTO } from "../../dtos/ICreateSpecificationDTO";
 
 @injectable()
 class CreateSpecificationUseCase {
@@ -15,7 +12,7 @@ class CreateSpecificationUseCase {
     private specificationsRepository: ISpecificationsRepository
   ) {}
 
-  async execute({ name, description }: IRequest): Promise<void> {
+  async execute({ name, description }: ICreateSpecificationDTO): Promise<void> {
     const specificationExists = await this.specificationsRepository.findByName(
       name
     );

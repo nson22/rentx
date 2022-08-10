@@ -3,7 +3,6 @@ import request from "supertest";
 import { Connection } from "typeorm";
 import { v4 as uuidv4 } from "uuid";
 
-import { Category } from "@modules/cars/infra/typeorm/entities/Category";
 import { app } from "@shared/infra/http/app";
 import createConnection from "@shared/infra/typeorm";
 

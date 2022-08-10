@@ -1,7 +1,7 @@
 import { ICreateUsersDTO } from "@modules/accounts/dtos/ICreateUserDTO";
-import { UsersRepositoryInMemory } from "@modules/accounts/repositories/in-memory/UsersRepositoryInMemoey";
-import { AuthenticateUserUseCase } from "@modules/accounts/useCases/authenticateUser/authenticateUserUseCase";
-import { CreateUserUserCase } from "@modules/accounts/useCases/createUser/createUserUseCase";
+import { UsersRepositoryInMemory } from "@modules/accounts/repositories/in-memory/UsersRepositoryInMemory";
+import { AuthenticateUserUseCase } from "@modules/accounts/useCases/authenticateUser/AuthenticateUserUseCase";
+import { CreateUserUserCase } from "@modules/accounts/useCases/createUser/CreateUserUseCase";
 import { AppError } from "@shared/errors/AppErrors";
 
 describe("Authenticate an user", () => {

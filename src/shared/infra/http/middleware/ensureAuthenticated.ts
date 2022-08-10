@@ -4,6 +4,8 @@ import { verify } from "jsonwebtoken";
 import { UsersRepository } from "@modules/accounts/infra/typeorm/repositories/UsersRepository";
 import { AppError } from "@shared/errors/AppErrors";
 
+import { IPayloadDTO } from "../../../../modules/accounts/dtos/IPayloadDTO";
+
 export async function ensureAuthenticated(
   request: Request,
   response: Response,

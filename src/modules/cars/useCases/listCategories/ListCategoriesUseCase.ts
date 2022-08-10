@@ -7,12 +7,11 @@ import { ICategoriesRepository } from "@modules/cars/repositories/ICategoriesRep
 class ListCategoriesUseCase {
   constructor(
     @inject("CategoriesRepository")
-    private categoriesRespository: ICategoriesRepository
+    private categoriesRepository: ICategoriesRepository
   ) {}
 
   async execute(): Promise<Category[]> {
-    const categories = await this.categoriesRespository.list();
-    return categories;
+    return this.categoriesRepository.list();
   }
 }
 

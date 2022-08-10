@@ -1,10 +1,12 @@
 import { inject, injectable } from "tsyringe";
 
-import { IRentalDTO } from "@modules/rentals/infra/dtos/IRentalDTO";
+import { ICarsRepository } from "@modules/cars/repositories/ICarsRepository";
 import { Rental } from "@modules/rentals/infra/typeorm/entities/Rental";
 import { IRentalsRepository } from "@modules/rentals/repositories/IRentalsRepository";
 import { IDateProvider } from "@shared/container/providers/DateProvider/IDateProvider";
 import { AppError } from "@shared/errors/AppErrors";
+
+import { IRentalDTO } from "../../infra/dtos/IRentalDTO";
 
 @injectable()
 class CreateRentalsUseCase {
@@ -13,7 +15,10 @@ class CreateRentalsUseCase {
     private rentalRepository: IRentalsRepository,
 
     @inject("DayjsDateProvider")
-    private dateProvider: IDateProvider
+    private dateProvider: IDateProvider,
+
+    @inject("CarsRepository")
+    private carsRepository: ICarsRepository
   ) {}
 
   async execute({
@@ -36,7 +41,7 @@ class CreateRentalsUseCase {
     );
 
     if (rentalOpenToUser) {
-      throw new AppError("There is in progress rental for selected user.");
+      throw new AppError("There is a progress rental for selected user.");
     }
 
     const compare = this.dateProvider.compareInHours(
@@ -53,6 +58,8 @@ class CreateRentalsUseCase {
       user_id,
       expected_return_date,
     });
+
+    await this.carsRepository.updateAvailable(car_id, false);
 
     return rental;
   }
