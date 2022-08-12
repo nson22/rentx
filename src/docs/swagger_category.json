@@ -1,88 +1,142 @@
 {
-    "openapi": "3.0.0",
-    "info": {
-        "title": "RentX documentations",
-        "description": "This is a API for car rent",
-        "version": "1.0.0",
-        "contact": {
-            "email": "glecinilson@gmail.com"
-        }
-    },
-    "paths": {
-        "/categories": {
-            "post": {
-                "tags": [
-                    "Categories"
-                ],
-                "summary": "Create a category",
-                "description": "Create a new category",
-                "requestBody": {
-                    "content": {
-                        "application/json": {
-                            "schema": {
-                                "type": "obejct",
-                                "properties": {
-                                    "name": {
-                                        "type": "string"
-                                    },
-                                    "description": {
-                                        "type": "string"
-                                    }
-                                },
-                                "example": {
-                                    "name": "Category name sampple",
-                                    "description": "Category description sample"
-                                }
-                            }
-                        }
-                    }
-                },
-                "responses": {
-                    "201": {
-                        "description": "Created"
-                    },
-                    "400": {
-                        "description": "Category already exists."
-                    }
-                }
-            },
-            "get": {
-                "tags": [
-                    "Categories"
-                ],
-                "summary": "List all categories",
-                "description": "List all categories available.",
-                "responses": {
-                    "200": {
-                        "description": "OK",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "type": "array",
-                                    "items": {
-                                        "type": "object",
-                                        "properties": {
-                                            "name": {
-                                                "type": "string"
-                                            },
-                                            "description": {
-                                                "type": "string"
-                                            }
-                                        }
-                                    }
-                                }
-                            }
-                        }
-                    }
-                }
-            }
-        },
-        "/categories/import": {
-            "post": {
-                "tags": [
-                    "Categories"
-                ],
-                "summary": "Import categories file",
+	"openapi": "3.0.0",
+	"info": {
+		"title": "RentX API",
+		"description": "An API for car rent",
+		"version": "1.0"
+	},
+	"paths": {
+		"/sessions": {
+			"post":{
+				"tags": ["Sessions"],
+				"summary":"Creates session",
+				"description":"Create session for a user",
+				"requestBody": {
+					"content": {
+						"application/json": {
+							"schema": {
+								"type": "object",
+								"properties": {
+									"email": {
+										"type": "string"
+									},
+									"password": {
+										"type": "string"
+									}
+								}
+							}
+						}
+					}
+				},
+				"responses":{
+					"201": {
+						"description": "Session token",
+						"content": {
+							"application/json":{
+								"schema": {
+									"type": "object",
+									"properties": {
+										"user":{
+											"type": "object",
+											"properties": {
+												"name": {
+													"type": "string"
+												},
+												"email": {
+													"type": "string"
+												}
+											}
+										},
+										"token":{
+											"type": "string"
+										}
+									}
+								}
+							}
+						}
+					},
+					"400": {
+						"description": "Email or password incorrect."
+					}
+				}
+			}
+		},
+		"/categories": {
+			"post": {
+				"security": [{
+					"bearerAuth": []
+				}],
+				"tags": ["Categories"],
+				"summary": "Creates a new category.",
+				"description": "Create a new category for a car",
+				"requestBody": {
+					"content": {
+						"application/json": {
+							"schema": {
+								"type": "object",
+								"properties": {
+									"name": {
+										"type": "string"
+									},
+									"description": {
+										"type": "string"
+									}
+								}
+							}
+						}
+					}
+				},
+				"responses":{
+					"201": {
+						"description": "Created"
+					},
+					"400": {
+						"description": "Category already exist in database."
+					}
+				}
+			},
+			"get": {
+				"security": [{
+					"bearerAuth": []
+				}],
+				"tags": ["Categories"],
+				"summary": "Get categories.",
+				"description": "Get all car categories",
+				"responses":{
+					"200": {
+						"description": "OK",
+						"content": {
+							"application/json": {
+								"schema": {
+									"type": "object",
+									"properties": {
+										"id": {
+											"type": "string"
+										},
+										"name": {
+											"type": "string"
+										},
+										"description": {
+											"type": "string"
+										},
+										"created_at": {
+											"type": "string"
+										}
+									}
+								}
+							}
+						}
+					}
+				}
+			}
+		},
+		"/categories/import": {
+			"patch": {
+				"security": [{
+					"bearerAuth": []
+				}],
+				"tags": ["Categories"],
+				"summary": "Import categories file",
                 "description": "Import a csv file with categories required.",
                 "requestBody": {
                     "content": {
@@ -102,82 +156,446 @@
                 "responses": {
                     "201": {
                         "description": "Created"
-                    }
-                }
-            }
-        },
-        "/specifications": {
-            "post": {
-                "tags": [
-                    "Specifications"
-                ],
-                "summary": "Create a specification",
-                "description": "Create a new specification",
-                "requestBody": {
-                    "content": {
-                        "application/json": {
-                            "schema": {
-                                "$ref": "#/definitions/Specifications"
-                            }
-                        }
-                    }
-                },
-                "responses": {
-                    "201": {
-                        "description": "Created"
                     },
                     "400": {
-                        "description": "Specification already exists."
+                        "description": "Error"
                     }
                 }
-            },
-            "get": {
-                "tags": [
-                    "Specifications"
-                ],
-                "summary": "List all specifications",
-                "description": "List all specifications available.",
-                "responses": {
-                    "200": {
-                        "description": "OK",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "type": "array",
-                                    "items": {
-                                        "type": "object",
-                                        "properties": {
-                                            "name": {
-                                                "type": "string"
-                                            },
-                                            "description": {
-                                                "type": "string"
-                                            }
-                                        }
-                                    }
-                                }
-                            }
-                        }
-                    }
-                }
-            }
-        }
-    },
-    "definitions": {
-        "Specifications": {
-            "type": "obejct",
-            "properties": {
-                "name": {
-                    "type": "string"
-                },
-                "description": {
-                    "type": "string"
-                }
-            },
-            "example": {
-                "name": "Specification name sampple",
-                "description": "Specification description sample"
-            }
-        }
-    }
+			}
+		},
+		"/specifications" :{
+			"post": {
+				"security": [{
+					"bearerAuth": []
+				}],
+				"tags": ["Specifications"],
+				"summary": "Creates a new specification.",
+				"description": "Create a new specification for a car",
+				"requestBody": {
+					"content": {
+						"application/json": {
+							"schema": {
+								"type": "object",
+								"properties": {
+									"name": {
+										"type": "string"
+									},
+									"description": {
+										"type": "string"
+									}
+								}
+							}
+						}
+					}
+				},
+				"responses":{
+					"201": {
+						"description": "Created"
+					},
+					"400": {
+						"description": "Specification already exist in database."
+					}
+				}
+			},
+			"get": {
+				"security": [{
+					"bearerAuth": []
+				}],
+				"tags": ["Specifications"],
+				"summary": "Get specifications.",
+				"description": "Get all car specifications",
+				"responses":{
+					"200": {
+						"description": "OK",
+						"content": {
+							"application/json": {
+								"schema": {
+									"type": "object",
+									"properties": {
+										"id": {
+											"type": "string"
+										},
+										"name": {
+											"type": "string"
+										},
+										"description": {
+											"type": "string"
+										},
+										"created_at": {
+											"type": "string"
+										}
+									}
+								}
+							}
+						}
+					}
+				}
+			}
+		},
+		"/cars":{
+			"post": {
+				"security": [{
+					"bearerAuth": []
+				}],
+				"tags": ["Cars"],
+				"summary": "Creates a new car.",
+				"description": "Create a new car",
+				"requestBody": {
+					"content": {
+						"application/json": {
+							"schema": {
+								"type": "object",
+								"properties": {
+									"name": {
+										"type": "string"
+									},
+									"description": {
+										"type": "string"
+									}
+								}
+							}
+						}
+					}
+				},
+				"responses":{
+					"201": {
+						"description": "Created"
+					},
+					"400": {
+						"description": "Car already exist in database."
+					}
+				}
+			}
+		},
+		"/cars/images/{id}":{
+			"post": {
+				"security": [{
+					"bearerAuth": []
+				}],
+				"tags": ["Cars"],
+				"summary": "Upload images.",
+				"description": "Upload images to a car",
+				"parameters":[
+					{
+						"name": "id",
+						"in":"path",
+						"description": "Car id",
+						"required": true,
+						"schema": {
+							"type": "string"
+						}
+					}
+				],
+				"requestBody": {
+					"content": {
+						"multipart/form-data": {
+							"schema": {
+								"type": "object",
+								"properties": {
+									"images": {
+										"type": "array",
+										"items": {
+											"type": "file",
+											"format": "binary"
+										}
+									}
+								}
+							}
+						}
+					}
+				},
+				"responses":{
+					"201": {
+						"description": "Created"
+					}
+				}
+			}
+		},
+		"/cars/available":{
+			"get": {
+				"security": [{
+					"bearerAuth": []
+				}],
+				"tags": ["Cars"],
+				"summary": "",
+				"description": "",
+				"responses":{
+					"200": {
+						"description": "OK",
+						"content": {
+							"application/json": {
+								"schema": {
+									"type": "object",
+									"properties": {
+										"id": {
+											"type": "string"
+										},
+										"name": {
+											"type": "string"
+										},
+										"description": {
+											"type": "string"
+										},
+										"created_at": {
+											"type": "string"
+										}
+									}
+								}
+							}
+						}
+					}
+				}
+			}
+		},
+		"/cars/specifications/{id}":{
+			"post": {
+				"security": [{
+					"bearerAuth": []
+				}],
+				"tags": ["Cars"],
+				"summary": "Creates a new car.",
+				"description": "Create a new car",
+				"requestBody": {
+					"content": {
+						"application/json": {
+							"schema": {
+								"type": "object",
+								"properties": {
+									"name": {
+										"type": "string"
+									},
+									"description": {
+										"type": "string"
+									}
+								}
+							}
+						}
+					}
+				},
+				"responses":{
+					"201": {
+						"description": "Created"
+					},
+					"400": {
+						"description": "Car already exist in database."
+					}
+				}
+			}
+		},
+		"/users":{
+			"post": {
+				"tags": ["Users"],
+				"summary": "Creates a new users.",
+				"description": "Create a new users",
+				"requestBody": {
+					"content": {
+						"application/json": {
+							"schema": {
+								"type": "object",
+								"properties": {
+									"name": {
+										"type": "string"
+									},
+									"description": {
+										"type": "string"
+									}
+								}
+							}
+						}
+					}
+				},
+				"responses":{
+					"201": {
+						"description": "Created"
+					},
+					"400": {
+						"description": "Car already exist in database."
+					}
+				}
+			},
+			"get": {
+				"security": [{
+					"bearerAuth": []
+				}],
+				"tags": ["Users"],
+				"summary": "",
+				"description": "",
+				"responses":{
+					"200": {
+						"description": "OK",
+						"content": {
+							"application/json": {
+								"schema": {
+									"type": "object",
+									"properties": {
+										"id": {
+											"type": "string"
+										},
+										"name": {
+											"type": "string"
+										},
+										"description": {
+											"type": "string"
+										},
+										"created_at": {
+											"type": "string"
+										}
+									}
+								}
+							}
+						}
+					}
+				}
+			}
+		},
+		"/users/avatar":{
+			"post": {
+				"tags": ["Users"],
+				"summary": "Creates a new users.",
+				"description": "Create a new users",
+				"requestBody": {
+					"content": {
+						"application/json": {
+							"schema": {
+								"type": "object",
+								"properties": {
+									"name": {
+										"type": "string"
+									},
+									"description": {
+										"type": "string"
+									}
+								}
+							}
+						}
+					}
+				},
+				"responses":{
+					"201": {
+						"description": "Created"
+					},
+					"400": {
+						"description": "Car already exist in database."
+					}
+				}
+			}
+		},
+		"/rentals":{
+			"post": {
+				"security": [{
+					"bearerAuth": []
+				}],
+				"tags": ["Rentals"],
+				"summary": "Creates a new rental.",
+				"description": "Create a new rental",
+				"requestBody": {
+					"content": {
+						"application/json": {
+							"schema": {
+								"type": "object",
+								"properties": {
+									"name": {
+										"type": "string"
+									},
+									"description": {
+										"type": "string"
+									}
+								}
+							}
+						}
+					}
+				},
+				"responses":{
+					"201": {
+						"description": "Created"
+					},
+					"400": {
+						"description": "Car already exist in database."
+					}
+				}
+			}
+			
+		},
+		"/rentals/devolution/{id}":{
+			"post": {
+				"security": [{
+					"bearerAuth": []
+				}],
+				"tags": ["Rentals"],
+				"summary": "Creates a new rental.",
+				"description": "Create a new rental",
+				"requestBody": {
+					"content": {
+						"application/json": {
+							"schema": {
+								"type": "object",
+								"properties": {
+									"name": {
+										"type": "string"
+									},
+									"description": {
+										"type": "string"
+									}
+								}
+							}
+						}
+					}
+				},
+				"responses":{
+					"201": {
+						"description": "Created"
+					},
+					"400": {
+						"description": "Car already exist in database."
+					}
+				}
+			}
+			
+		},
+		"/rentals/user":{
+			"get": {
+				"security": [{
+					"bearerAuth": []
+				}],
+				"tags": ["Rentals"],
+				"summary": "",
+				"description": "",
+				"responses":{
+					"200": {
+						"description": "OK",
+						"content": {
+							"application/json": {
+								"schema": {
+									"type": "object",
+									"properties": {
+										"id": {
+											"type": "string"
+										},
+										"name": {
+											"type": "string"
+										},
+										"description": {
+											"type": "string"
+										},
+										"created_at": {
+											"type": "string"
+										}
+									}
+								}
+							}
+						}
+					}
+				}
+			}
+		}
+	},
+	"components": {
+		"securitySchemes": {
+			"bearerAuth": {
+				"type": "http",
+				"scheme": "bearer",
+				"bearerFormat": "JWT"
+			}
+		}
+	}
 }

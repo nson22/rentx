@@ -9,17 +9,17 @@ import { ICreateCategoryDTO } from "../../dtos/ICreateCategoryDTO";
 class CreateCategoryUseCase {
   constructor(
     @inject("CategoriesRepository")
-    private categoriesRespository: ICategoriesRepository
+    private categoriesRepository: ICategoriesRepository
   ) {}
 
   async execute({ name, description }: ICreateCategoryDTO): Promise<void> {
-    const categoryExists = await this.categoriesRespository.findByName(name);
+    const categoryExists = await this.categoriesRepository.findByName(name);
 
     if (categoryExists) {
       throw new AppError("Category already exist in database.");
     }
 
-    this.categoriesRespository.create({ name, description });
+    this.categoriesRepository.create({ name, description });
   }
 }
 
