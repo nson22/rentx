@@ -4,6 +4,7 @@ import { verify } from "jsonwebtoken";
 import { UsersRepository } from "@modules/accounts/infra/typeorm/repositories/UsersRepository";
 import { AppError } from "@shared/errors/AppErrors";
 
+import auth from "../../../../config/auth";
 import { IPayloadDTO } from "../../../../modules/accounts/dtos/IPayloadDTO";
 
 export async function ensureAuthenticated(
@@ -20,10 +21,7 @@ export async function ensureAuthenticated(
   const [, token] = authHeader.split(" ");
 
   try {
-    const { sub: user_id } = verify(
-      token,
-      "4e325a659675d10353727d6211db0cf8"
-    ) as IPayloadDTO;
+    const { sub: user_id } = verify(token, auth.secretToken) as IPayloadDTO;
 
     const usersRepository = new UsersRepository();
 

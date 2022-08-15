@@ -3,19 +3,26 @@ import { sign } from "jsonwebtoken";
 import { inject, injectable } from "tsyringe";
 
 import { IUsersRepository } from "@modules/accounts/repositories/IUsersRepository";
+import { IUserTokensRepository } from "@modules/accounts/repositories/IUserTokensRepository";
+import { DayjsDateProvider } from "@shared/container/providers/DateProvider/implementations/DayjsDateProvider";
 import { AppError } from "@shared/errors/AppErrors";
 
+import auth from "../../../../config/auth";
 import { IAuthenticateUserDTO, ITokenDTO } from "./IAuthenticateUserDTO";
 
 @injectable()
 class AuthenticateUserUseCase {
   constructor(
     @inject("UsersRepository")
-    private usersRepository: IUsersRepository
+    private usersRepository: IUsersRepository,
+
+    @inject("UserTokensRepository")
+    private userTokensRepository: IUserTokensRepository
   ) {}
 
   async execute({ email, password }: IAuthenticateUserDTO): Promise<ITokenDTO> {
     const user = await this.usersRepository.findByEmail(email);
+    const days = new DayjsDateProvider();
 
     if (!user) {
       throw new AppError("Email or password incorrect.");
@@ -27,9 +34,20 @@ class AuthenticateUserUseCase {
       throw new AppError("Email or password incorrect.");
     }
 
-    const token = sign({}, "4e325a659675d10353727d6211db0cf8", {
+    const refreshToken = sign({ email }, auth.refreshToken, {
       subject: user.id,
-      expiresIn: "1d",
+      expiresIn: auth.refreshTokenExpireIn,
+    });
+
+    await this.userTokensRepository.create({
+      userId: user.id,
+      refreshToken,
+      expiresDate: days.addDays(30),
+    });
+
+    const token = sign({}, auth.secretToken, {
+      subject: user.id,
+      expiresIn: auth.expiresIn,
     });
 
     return {
@@ -38,6 +56,7 @@ class AuthenticateUserUseCase {
         email: user.email,
       },
       token,
+      refreshToken,
     };
   }
 }

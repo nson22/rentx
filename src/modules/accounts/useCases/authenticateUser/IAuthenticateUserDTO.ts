@@ -9,6 +9,7 @@ interface ITokenDTO {
     email: string;
   };
   token: string;
+  refreshToken: string;
 }
 
 export { IAuthenticateUserDTO, ITokenDTO };
