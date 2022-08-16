@@ -1,8 +1,9 @@
 import "dotenv/config";
 
 export default {
-  secretToken: process.env.SECRET_TOKEN,
-  expiresIn: process.env.EXPIRES_IN,
-  refreshToken: process.env.REFRESH_TOKEN,
-  refreshTokenExpireIn: process.env.REFRESH_TOKEN_EXPIRES_IN,
+  secret_token: process.env.SECRET_TOKEN,
+  secret_refresh_token: process.env.SECRET_REFRESH_TOKEN,
+  expires_in_token: "15m",
+  expires_in_refresh_token: "30d",
+  expires_refresh_token_days: 30,
 };

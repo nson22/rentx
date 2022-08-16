@@ -34,9 +34,9 @@ class AuthenticateUserUseCase {
       throw new AppError("Email or password incorrect.");
     }
 
-    const refreshToken = sign({ email }, auth.refreshToken, {
+    const refreshToken = sign({ email }, auth.secret_refresh_token, {
       subject: user.id,
-      expiresIn: auth.refreshTokenExpireIn,
+      expiresIn: auth.expires_in_refresh_token,
     });
 
     await this.userTokensRepository.create({
@@ -45,9 +45,9 @@ class AuthenticateUserUseCase {
       expiresDate: days.addDays(30),
     });
 
-    const token = sign({}, auth.secretToken, {
+    const token = sign({}, auth.secret_token, {
       subject: user.id,
-      expiresIn: auth.expiresIn,
+      expiresIn: auth.expires_in_token,
     });
 
     return {

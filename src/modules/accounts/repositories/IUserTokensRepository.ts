@@ -7,6 +7,13 @@ interface IUserTokensRepository {
     refreshToken,
     expiresDate,
   }: ICreateUserTokensDTO): Promise<UserTokens>;
+
+  findByUserIdAndRefreshToken(
+    userId: string,
+    token: string
+  ): Promise<UserTokens>;
+
+  deleteById(userId: string): Promise<void>;
 }
 
 export { IUserTokensRepository };

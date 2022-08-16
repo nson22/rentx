@@ -1,4 +1,3 @@
-import { inject, injectable } from "tsyringe";
 import { getRepository, Repository } from "typeorm";
 
 import { ICreateUserTokensDTO } from "@modules/accounts/dtos/ICreateUserTokensDTO";
@@ -6,7 +5,6 @@ import { IUserTokensRepository } from "@modules/accounts/repositories/IUserToken
 
 import { UserTokens } from "../entities/UserTokens";
 
-@injectable()
 class UserTokensRepository implements IUserTokensRepository {
   private userTokensRepository: Repository<UserTokens>;
 
@@ -28,6 +26,22 @@ class UserTokensRepository implements IUserTokensRepository {
     await this.userTokensRepository.save(userTokens);
 
     return userTokens;
+  }
+
+  async findByUserIdAndRefreshToken(
+    userId: string,
+    token: string
+  ): Promise<UserTokens> {
+    const usersToken = await this.userTokensRepository.findOne({
+      user_id: userId,
+      refresh_token: token,
+    });
+
+    return usersToken;
+  }
+
+  async deleteById(userId: string): Promise<void> {
+    await this.userTokensRepository.delete(userId);
   }
 }
 
