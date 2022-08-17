@@ -1,7 +1,6 @@
-import { Request, Response, NextFunction } from "express";
+import { NextFunction, Request, Response } from "express";
 import { verify } from "jsonwebtoken";
 
-import { UsersRepository } from "@modules/accounts/infra/typeorm/repositories/UsersRepository";
 import { UserTokensRepository } from "@modules/accounts/infra/typeorm/repositories/UserTokensRepository";
 import { AppError } from "@shared/errors/AppErrors";
 

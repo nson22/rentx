@@ -4,7 +4,7 @@ import { inject, injectable } from "tsyringe";
 
 import { IUsersRepository } from "@modules/accounts/repositories/IUsersRepository";
 import { IUserTokensRepository } from "@modules/accounts/repositories/IUserTokensRepository";
-import { DayjsDateProvider } from "@shared/container/providers/DateProvider/implementations/DayjsDateProvider";
+import { IDateProvider } from "@shared/container/providers/DateProvider/IDateProvider";
 import { AppError } from "@shared/errors/AppErrors";
 
 import auth from "../../../../config/auth";
@@ -17,12 +17,14 @@ class AuthenticateUserUseCase {
     private usersRepository: IUsersRepository,
 
     @inject("UserTokensRepository")
-    private userTokensRepository: IUserTokensRepository
+    private userTokensRepository: IUserTokensRepository,
+
+    @inject("DayjsDateProvider")
+    private dayjsDateProvider: IDateProvider
   ) {}
 
   async execute({ email, password }: IAuthenticateUserDTO): Promise<ITokenDTO> {
     const user = await this.usersRepository.findByEmail(email);
-    const days = new DayjsDateProvider();
 
     if (!user) {
       throw new AppError("Email or password incorrect.");
@@ -42,7 +44,7 @@ class AuthenticateUserUseCase {
     await this.userTokensRepository.create({
       userId: user.id,
       refreshToken,
-      expiresDate: days.addDays(30),
+      expiresDate: this.dayjsDateProvider.addDays(30),
     });
 
     const token = sign({}, auth.secret_token, {
